@@ -34,4 +34,3 @@ int main (void)
 		Menu_Adc1_Page();
 	}
 }
-
