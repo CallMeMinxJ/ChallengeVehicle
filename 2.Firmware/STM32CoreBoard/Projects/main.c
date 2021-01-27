@@ -2,7 +2,6 @@
  * @file      main.c
  * @brief     项目主函数文件
  * @author    MINXJ (CallMeMinxJ@outlook.com)
- * @version   0.1
  * @date      2021-01-27
  * 
  * @copyright Copyright (c) CAUC
