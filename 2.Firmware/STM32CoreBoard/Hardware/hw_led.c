@@ -1,63 +1,63 @@
 /**
- * @brief		ºËÐÄ°åÉÏLEDÏà¹Øº¯Êý
- * @author	ÎäÊõÀÞÌ¨³µÐ¡×é
- * @global	bool Led_0_Flash_Door - ¿ØÖÆLed_0ÉÁË¸
- *					bool Led_1_Flash_Door - ¿ØÖÆLed_1ÉÁË¸
+ * @brief		ï¿½ï¿½ï¿½Ä°ï¿½ï¿½ï¿½LEDï¿½ï¿½Øºï¿½ï¿½ï¿½
+ * @author	ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì¨ï¿½ï¿½Ð¡ï¿½ï¿½
+ * @global	bool Led_0_Flash_Door - ï¿½ï¿½ï¿½ï¿½Led_0ï¿½ï¿½Ë¸
+ *					bool Led_1_Flash_Door - ï¿½ï¿½ï¿½ï¿½Led_1ï¿½ï¿½Ë¸
  * @version v0.0.0
  * @date		2021/01/24
  */
 
-/*Í·ÎÄ¼þ²¿·Ö*/
+/*Í·ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½*/
 #include "system.h"
-#include "led.h"
+#include "hw_led.h"
 
-/*È«¾Ö±äÁ¿²¿·Ö*/
+/*È«ï¿½Ö±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
 bool Led_0_Flash_Door = false;
 bool Led_1_Flash_Door = false;
 
 /**
- * @brief		LED³õÊ¼»¯º¯Êý
- * @param		ÎÞ
- * @return	ÎÞ
+ * @brief		LEDï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+ * @param		ï¿½ï¿½
+ * @return	ï¿½ï¿½
  */
 void Led_Init(void)
 {
-	//¶¨Òå³õÊ¼»¯½á¹¹Ìå
+	//ï¿½ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½á¹¹ï¿½ï¿½
 	GPIO_InitTypeDef GPIO_InitStructure;
-	//Ê¹ÄÜÒý½ÅÍâ²¿Ê±ÖÓ
+	//Ê¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½â²¿Ê±ï¿½ï¿½
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB,ENABLE);
 	
 	/*GPIOB*/
-	//³õÊ¼»¯½á¹¹ÌåÖÃÈ±Ê¡Öµ
+	//ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½á¹¹ï¿½ï¿½ï¿½ï¿½È±Ê¡Öµ
 	GPIO_StructInit(&GPIO_InitStructure);
-	//Òý½Å²ÎÊýÅäÖÃ½á¹¹Ìå
+	//ï¿½ï¿½ï¿½Å²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã½á¹¹ï¿½ï¿½
 	GPIO_InitStructure.GPIO_Pin	=	GPIO_Pin_12|GPIO_Pin_13;
-	GPIO_InitStructure.GPIO_Mode= GPIO_Mode_Out_PP;//ÍÆÍìÊä³ö
-	//ÔØÈë²ÎÊýÅäÖÃ½á¹¹Ìå
+	GPIO_InitStructure.GPIO_Mode= GPIO_Mode_Out_PP;//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã½á¹¹ï¿½ï¿½
 	GPIO_Init(GPIOB,&GPIO_InitStructure);
 
-	//LED×´Ì¬³õÊ¼»¯
+	//LED×´Ì¬ï¿½ï¿½Ê¼ï¿½ï¿½
 	Led_0 = Led_Turn_Off;
 	Led_1 = Led_Turn_Off;
 }
 
 /**
- * @brief		LEDÏÔÊ¾º¯Êý
+ * @brief		LEDï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½
  * @param		uint8_t Led_0_Mode
- *						Led_Turn_On		-	0	³£ÁÁ
- *						Led_Turn_Off	-	1	³£Ãð
- *						Led_Flash			-	2	ÉÁË¸
- * @return	ÎÞ
+ *						Led_Turn_On		-	0	ï¿½ï¿½ï¿½ï¿½
+ *						Led_Turn_Off	-	1	ï¿½ï¿½ï¿½ï¿½
+ *						Led_Flash			-	2	ï¿½ï¿½Ë¸
+ * @return	ï¿½ï¿½
  */
 void Led_Display(uint8_t Led_0_Mode,uint8_t Led_1_Mode)
 {
-	//µãÁÁºÍÏ¨Ãð
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¨ï¿½ï¿½
 	if 			(Led_0_Mode == Led_Turn_On)		Led_0 = Led_Turn_On;
 	else if (Led_0_Mode == Led_Turn_Off)	Led_0 = Led_Turn_Off;
 	if 			(Led_1_Mode == Led_Turn_On)		Led_1 = Led_Turn_On;
 	else if (Led_1_Mode == Led_Turn_Off)	Led_1 = Led_Turn_Off;
 	
-	//LEDÉÁË¸
+	//LEDï¿½ï¿½Ë¸
 	if (Led_0_Mode == Led_Flash)Led_0_Flash_Door = true;
 	else	Led_0_Flash_Door = false;
 	if (Led_1_Mode == Led_Flash)Led_1_Flash_Door = true;

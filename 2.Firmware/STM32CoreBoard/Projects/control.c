@@ -12,12 +12,12 @@
  /*ͷ�ļ�����*/
 #include "system.h"
 #include "control.h"
-#include "key.h"
-#include "led.h"
-#include "oled.h"
-#include "timer.h"
-#include "adc.h"
-#include "dma.h"
+#include "hw_key.h"
+#include "hw_led.h"
+#include "hw_oled.h"
+#include "hw_timer.h"
+#include "hw_adc.h"
+#include "hw_dma.h"
 
 /**
  * @brief     车辆总体初始化函数

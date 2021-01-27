@@ -1,32 +1,32 @@
 /**
- * @brief		°üº¬ºËÐÄ°åÓÃµ½µÄDMAÏà¹Øº¯Êý
- * @author	ÎäÊõÀÞÌ¨³µÐ¡×é
- * @global	uint16_t Adc1_Buff[16]	-	´æ·ÅADC1 16¸ö¶Ë¿Ú×ª»»½á¹û
+ * @brief		ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä°ï¿½ï¿½Ãµï¿½ï¿½ï¿½DMAï¿½ï¿½Øºï¿½ï¿½ï¿½
+ * @author	ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì¨ï¿½ï¿½Ð¡ï¿½ï¿½
+ * @global	uint16_t Adc1_Buff[16]	-	ï¿½ï¿½ï¿½ADC1 16ï¿½ï¿½ï¿½Ë¿ï¿½×ªï¿½ï¿½ï¿½ï¿½ï¿½
  * @version v0.0.0
  * @date		2021/01/27
  */
  
-/*Í·ÎÄ¼þ²¿·Ö*/
+/*Í·ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½*/
 #include "system.h"
-#include "dma.h"
+#include "hw_dma.h"
 
-/*È«¾Ö±äÁ¿²¿·Ö*/
+/*È«ï¿½Ö±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
 uint16_t Adc1_Buff[16]={0};
 
 /**
- * @brief		ADC->[È«¾Ö±äÁ¿]DMAÍ¨µÀ³õÊ¼»¯
- * @param		ÎÞ
- * @return	ÎÞ
+ * @brief		ADC->[È«ï¿½Ö±ï¿½ï¿½ï¿½]DMAÍ¨ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½
+ * @param		ï¿½ï¿½
+ * @return	ï¿½ï¿½
  */
 void Dma_Adc1_To_GlobalVar(void)
 {
-	//¶¨Òå³õÊ¼»¯½á¹¹Ìå
+	//ï¿½ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½á¹¹ï¿½ï¿½
 	DMA_InitTypeDef DMA_Struct;
 	
-	//Ê¹ÄÜDMAÆ¬ÄÚÊ±ÖÓ
+	//Ê¹ï¿½ï¿½DMAÆ¬ï¿½ï¿½Ê±ï¿½ï¿½
 	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA1, ENABLE);
 	
-	//ÅäÖÃ½á¹¹Ìå
+	//ï¿½ï¿½ï¿½Ã½á¹¹ï¿½ï¿½
 	DMA_StructInit(&DMA_Struct);
 	DMA_Struct.DMA_PeripheralBaseAddr = (uint32_t)&ADC1->DR; 
 	DMA_Struct.DMA_MemoryBaseAddr     = (uint32_t)Adc1_Buff;
@@ -37,11 +37,11 @@ void Dma_Adc1_To_GlobalVar(void)
 	DMA_Struct.DMA_Mode               = DMA_Mode_Circular;
 	DMA_Struct.DMA_Priority           = DMA_Priority_High;
 	
-	//Ìá½»ÅäÖÃ½á¹¹Ìå
+	//ï¿½á½»ï¿½ï¿½ï¿½Ã½á¹¹ï¿½ï¿½
 	DMA_Init(DMA1_Channel1, &DMA_Struct);
-	//ÖÐ¶ÏÊ¹ÄÜ
+	//ï¿½Ð¶ï¿½Ê¹ï¿½ï¿½
 	DMA_ITConfig(DMA1_Channel1,DMA_IT_TC,ENABLE);
-	//Ê¹ÄÜDMAÍ¨µÀ1
+	//Ê¹ï¿½ï¿½DMAÍ¨ï¿½ï¿½1
 	DMA_Cmd(DMA1_Channel1, ENABLE);
 }
 

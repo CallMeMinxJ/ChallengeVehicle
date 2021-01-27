@@ -12,8 +12,8 @@
 /*头文件部分*/
  #include "system.h"
  #include "menu.h"
- #include "oled.h"
- #include "adc.h"
+ #include "hw_oled.h"
+ #include "hw_adc.h"
   
 /*全局变量部分*/
 extern uint16_t Adc1_Buff[16];

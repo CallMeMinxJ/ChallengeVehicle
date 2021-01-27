@@ -11,8 +11,8 @@
 /*头文件部分*/
 #include "system.h"
 #include "control.h"
-#include "key.h"
-#include "oled.h"
+#include "hw_key.h"
+#include "hw_oled.h"
 #include "menu.h"
 
 /**
@@ -34,3 +34,4 @@ int main (void)
 		Menu_Adc1_Page();
 	}
 }
+
