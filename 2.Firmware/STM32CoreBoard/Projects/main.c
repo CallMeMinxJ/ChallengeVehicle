@@ -1,13 +1,15 @@
 /**
  * @file      main.c
- * @brief     项目主函数文件
+ * @brief     工程的主函数文件
  * @author    MINXJ (CallMeMinxJ@outlook.com)
- * @date      2021-01-27
+ * @version   0.1
+ * @date      2021-01-28
  * 
- * @copyright Copyright (c) CAUC
+ * @copyright Copyright (C) 2007 Free Software Foundation, Inc. <https://fsf.org/>
+ *            Everyone is permitted to copy and distribute verbatim copies
+ *            of this license document, but changing it is not allowed.
  * 
  */
-
 /*头文件部分*/
 #include "system.h"
 #include "control.h"

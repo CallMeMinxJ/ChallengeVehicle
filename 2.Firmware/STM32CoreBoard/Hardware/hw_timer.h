@@ -1,10 +1,10 @@
 #ifndef _TIM_H_
 #define _TIM_H_
 
-/*Í·ÎÄ¼þ²¿·Ö*/
+/*å¤´æ–‡ä»¶éƒ¨åˆ†*/
 #include "system.h"
 
-/*º¯ÊýÉùÃ÷²¿·Ö*/
+/*å‡½æ•°å£°æ˜Žéƒ¨åˆ†*/
 void TIM3_Init(uint16_t ARR,uint16_t PSC);
 
 

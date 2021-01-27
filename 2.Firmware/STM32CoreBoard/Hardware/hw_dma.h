@@ -1,10 +1,10 @@
 #ifndef _DMA_H_
 #define _DMA_H_
 
-/*Í·ÎÄ¼þ²¿·Ö*/
+/*å¤´æ–‡ä»¶éƒ¨åˆ†*/
 #include "system.h"
 
-/*º¯ÊýÉùÃ÷²¿·Ö*/
+/*å‡½æ•°å£°æ˜Žéƒ¨åˆ†*/
 void Dma_Adc1_To_GlobalVar(void);
 
 #endif

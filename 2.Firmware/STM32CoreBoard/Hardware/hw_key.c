@@ -1,57 +1,52 @@
 /**
- * @brief		�������İ��ϰ�����غ���
- * @author	������̨��С��
- * @version v0.0.0
- * @date		2021/01/24
+ * @file      hw_key.c
+ * @brief     按键功能实现相关函数
+ * @author    MINXJ (CallMeMinxJ@outlook.com)
+ * @version   0.1
+ * @date      2021-01-28
+ * 
+ * @copyright Copyright (C) 2007 Free Software Foundation, Inc. <https://fsf.org/>
+ *            Everyone is permitted to copy and distribute verbatim copies
+ *            of this license document, but changing it is not allowed.
+ * 
  */
  
- /*ͷ�ļ�����*/
+ /*头文件部分*/
  #include "system.h"
  #include "hw_key.h"
  #include "hw_led.h"
  
 /**
- * @brief		������ʼ���ĺ���
- * @param		��
- * @return	��
+ * @brief     按键GPIO初始化
  */
 void Key_Init(void)
 {
-	//�����ʼ���ṹ��
 	GPIO_InitTypeDef GPIO_InitStructure;
-	//ʹ�������ⲿʱ��
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOD,ENABLE);
 	
 	/*GPIOD*/
-	//��ʼ���ṹ����ȱʡֵ
 	GPIO_StructInit(&GPIO_InitStructure);
-	//���Ų������ýṹ��
 	GPIO_InitStructure.GPIO_Pin	=	GPIO_Pin_10|GPIO_Pin_9|GPIO_Pin_8;
-	GPIO_InitStructure.GPIO_Mode= GPIO_Mode_IPU;//�������
-	//����������ýṹ��
+	GPIO_InitStructure.GPIO_Mode= GPIO_Mode_IPU;//上拉输入
 	GPIO_Init(GPIOD,&GPIO_InitStructure);
 }
 
 /**
- * @brief		������⺯��
- * @param		uint8_t	mode��
- *						Mode_cnt	1 - �������
- *						Mode_Ucnt	0 - ���������
- * @return	uint8_t Key_Num:
- *						Key_0_Num 	1 - ����0
- *						Key_1_Num 	2 - ����1
- *						Key_2_Num 	3 - ����2
- *						No_Key_Num 	1 - �ް���
+ * @brief     按键检测函数
+ * @param     mode - 检测模式
+ * 					 Mode_cnt	- 连续监测
+ * 					 Mode_Ucnt	- 非连续监测
+ * @return    uint8_t 返回按下按键编码
  */
 uint8_t Key_Scan(uint8_t mode)
 {
-	static int8_t KEY_STATE = 1;//��¼����״̬
-    int8_t cnt   = 0,//��¼�������¸�����ֹ��
-           test1 = 0,//��¼����
-           test2 = 0;//��֤����
+	static int8_t KEY_STATE = 1;//状态标志
+    int8_t cnt   = 0,//防止误触
+           test1 = 0,//检测1
+           test2 = 0;//检测2
     if (mode == Mode_cnt)   KEY_STATE = 1;
     
-    /*����һ�δ���*/
+    //初次检测
     if (Key_0)	test1 = Key_0_Num	,cnt++;
     if (Key_1)	test1 = Key_1_Num	,cnt++;
     if (Key_2)	test1 = Key_2_Num	,cnt++;
@@ -59,27 +54,23 @@ uint8_t Key_Scan(uint8_t mode)
     if (cnt==1 && KEY_STATE)
     {
         cnt       = 0;
-        KEY_STATE = 0;//������ʱ����״̬�ȴ���1
-        Delay_ms(Key_Debounce_Time);//���������ȴ�
+        KEY_STATE = 0;//判断状态
+        Delay_ms(Key_Debounce_Time);//延迟消抖
         
-        /*���ڶ��δ���*/
+        //第二次检测
         if (Key_0)  test2 = Key_0_Num	,cnt++;
         if (Key_1)	test2 = Key_1_Num	,cnt++;
         if (Key_2)	test2 = Key_2_Num	,cnt++;
         if (cnt==1 && test1 == test2) return test2;
     }
     else
-        if (!cnt)  KEY_STATE = 1;//������ʱ�޴�����1�����´δ���
+        if (!cnt)  KEY_STATE = 1;//更新状态
     return  No_Key_Num;
 }
 
 /**
- * @brief		����ʵ�ֹ��ܺ���
- * @param		uint8_t Key_Num	-	��Ӧ��ͬ�����ı���
- *						Key_0_Num - 
- *						Key_1_Num - 
- *						Key_2_Num - 
- * @return	��
+ * @brief     按键功能实现
+ * @param     Key_Num - 按下的按键编码
  */
 void Key_Function(uint8_t Key_Num)
 {

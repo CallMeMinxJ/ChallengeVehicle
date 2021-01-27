@@ -1,26 +1,32 @@
 /**
- * @brief		OLED��غ���
- * @author	������̨��С��
- * @version v0.0.0
- * @date		2021/01/23
- * @attention
- *					���ļ�ʹ��������ת�ַ�������������������system.c��
+ * @file      hw_oled.c
+ * @brief     OLED模块初始化部分
+ * @author    MINXJ (CallMeMinxJ@outlook.com)
+ * @version   0.1
+ * @date      2021-01-28
+ * 
+ * @copyright Copyright (C) 2007 Free Software Foundation, Inc. <https://fsf.org/>
+ *            Everyone is permitted to copy and distribute verbatim copies
+ *            of this license document, but changing it is not allowed.
+ * 
  */
  
-/*ͷ�ļ�����*/
+/*头文件部分*/
 #include "stdlib.h"
 #include <math.h>
 #include "system.h"
 #include "hw_oled.h"
 #include "hw_oledfont.h"
 
-/*ȫ�ֱ�������*/
+/*全局变量部分*/
 uint8_t OLED_GRAM[128][8];	//�Դ�
 
 /**
- * @brief		��OLEDд���������
- * @param		dat��ָ������ cmd��д����/д����
- * @return	��
+ * @brief     写 命令/数据 函数
+ * @param     dat - 写入的 命令/数据
+ * @param     cmd - 写入模式
+ * 					cmd = 1:命令
+ * 					cmd = 0:数据
  */
 void OLED_WR_Byte( uint8_t dat, uint8_t cmd)
 {
@@ -43,9 +49,7 @@ void OLED_WR_Byte( uint8_t dat, uint8_t cmd)
 }
 
 /**
- * @brief		��������ˢ���Դ�����
- * @param		��
- * @return	��
+ * @brief     OLED软刷新
  */
 void OLED_Refresh_Gram(void)
 {
@@ -60,52 +64,50 @@ void OLED_Refresh_Gram(void)
 }
 
 /**
- * @brief		��OLED��ʾ
- * @param		��
- * @return	��
+ * @brief     OLED开启显示
  */
 void OLED_Display_On(void)
 {
-	OLED_WR_Byte(0X8D,OLED_CMD);  //SET DCDC����
+	OLED_WR_Byte(0X8D,OLED_CMD);  //SET DCDC
 	OLED_WR_Byte(0X14,OLED_CMD);  //DCDC ON
 	OLED_WR_Byte(0XAF,OLED_CMD);  //DISPLAY ON
 }
 
 /**
- * @brief		�ر�OLED��ʾ
- * @param		��
- * @return	��
+ * @brief     OLED关闭显示
  */
 void OLED_Display_Off(void)
 {
-	OLED_WR_Byte(0X8D,OLED_CMD);  //SET DCDC����
+	OLED_WR_Byte(0X8D,OLED_CMD);  //SET DCDC
 	OLED_WR_Byte(0X10,OLED_CMD);  //DCDC OFF
 	OLED_WR_Byte(0XAE,OLED_CMD);  //DISPLAY OFF
 }		   			 
 
 
 /**
- * @brief		OLED����������������ȫ��
- * @param		mode��1/0 ������ˢ��/��ˢ��
- * @return	��
+ * @brief     OLED清屏函数
+ * @param     mode - 清屏方式
+ * 					 mode：1 正常
+ * 					 mode: 0 反白
  */
 void OLED_Clear(uint8_t mode)  
 {  
 	u8 i,n;  
 	for(i=0;i<8;i++)for(n=0;n<128;n++)OLED_GRAM[n][i]=0X00;  
 	if (mode)
-		OLED_Refresh_Gram();//������ʾ
+		OLED_Refresh_Gram();
 }
 
 /**
- * @brief		���ܣ�����Ļһ��λ���ϻ���
- * @param		x:������� y���������� t����ʾ��ʽ ��/��
- * @return	��
+ * @brief     OLED画点函数
+ * @param     x - x轴坐标
+ * @param     y - y轴坐标
+ * @param     t - 1：正常 0：反白
  */
 void OLED_DrawPoint(uint8_t x,uint8_t y,uint8_t t)
 {
 	uint8_t pos,bx,temp=0;
-	if(x>127||y>63)return;//������Χ��.
+	if(x>127||y>63)return;
 	pos=7-y/8;
 	bx=y%8;
 	temp=1<<(7-bx);
@@ -114,26 +116,28 @@ void OLED_DrawPoint(uint8_t x,uint8_t y,uint8_t t)
 }
 
 /**
- * @brief		���ܣ���һ��ֱ��
- * @param		x1,y1:��һ�������� x2,y2:�ڶ��������� mode��1/0 ����/����
- * @return	��
+ * @brief     OLED画直线函数
+ * @param     x1 - A点x坐标
+ * @param     y1 - A点y坐标
+ * @param     x2 - B点x坐标
+ * @param     y2 - B点y坐标
+ * @param     mode - 画线模式 1:正常 0：反白
  */
 void OLED_DrawLine(uint8_t x1,uint8_t y1,uint8_t x2,uint8_t y2,uint8_t mode)
 {
 	int16_t 
-		delta_x = x2-x1,		//��ֵ
+		delta_x = x2-x1,
 		delta_y = y2-y1,
-		cpr_x = 0,					//�Ƚ�ֵ
+		cpr_x = 0,
 		cpr_y = 0;
 	
 	uint8_t 
 		n = 0,
-		x = x1,							//��ǰ����
+		x = x1,	
 		y = y1,
-												//��¼����
+		
 		distance = abs(delta_x)>=abs(delta_y)?abs(delta_x):abs(delta_y);	
 	
-	//����
 	if(delta_x == 0)
 	{
 		for(n=0;n<abs(y2-y1)+1;n++)
@@ -142,7 +146,6 @@ void OLED_DrawLine(uint8_t x1,uint8_t y1,uint8_t x2,uint8_t y2,uint8_t mode)
 			y+=(y2>=y1)?1:-1;
 		}
 	}
-	//�Ǵ��� ���
 	else
 	{
 		for(n=0;n<=distance+1;n++)
@@ -168,9 +171,12 @@ void OLED_DrawLine(uint8_t x1,uint8_t y1,uint8_t x2,uint8_t y2,uint8_t mode)
 }
 
 /**
- * @brief		���ܣ���һ������
- * @param		x1,y1:������� y1,y2���յ�����
- * @return	��
+ * @brief     OLED画矩形函数
+ * @param     x1 - A点x坐标
+ * @param     y1 - A点y坐标
+ * @param     x2 - B点x坐标
+ * @param     y2 - B点y坐标
+ * @param     mode - 画线模式 1:正常 0：反白
  */
 void OLED_DrawRectangular(uint8_t x1,uint8_t y1,uint8_t x2,uint8_t y2,uint8_t mode)
 {
@@ -181,22 +187,25 @@ void OLED_DrawRectangular(uint8_t x1,uint8_t y1,uint8_t x2,uint8_t y2,uint8_t mo
 }
 
 /**
- * @brief		���ܣ�����Ļ��һ��λ����ʾһ���ַ�
- * @param		x:������ y�������� size���ֺ� 12/16/24 mode��0������ʾ 1������ʾ
- * @return	��
+ * @brief     OLED显示字符函数
+ * @param     x - x轴坐标
+ * @param     y - y轴坐标
+ * @param     chr - 字符常量
+ * @param     size - 字体大小 12/16/24
+ * @param     mode - 模式 1:正常 0：反白
  */
 void OLED_ShowChar(uint8_t x,uint8_t y,uint8_t chr,uint8_t size,uint8_t mode)
 {      			    
 	uint8_t temp,t,t1;
 	uint8_t y0=y;
-	uint8_t csize=(size/8+((size%8)?1:0))*(size/2);		//�õ�����һ���ַ���Ӧ������ռ���ֽ���
-	chr=chr-' ';//�õ�ƫ�ƺ��ֵ		 
+	uint8_t csize=(size/8+((size%8)?1:0))*(size/2);	
+	chr=chr-' '; 
     for(t=0;t<csize;t++)
     {   
-			if(size==12)temp=asc2_1206[chr][t]; 	 		//����1206����
-			else if(size==16)temp=asc2_1608[chr][t];	//����1608����
-			else if(size==24)temp=asc2_2412[chr][t];	//����2412����
-			else return;															//û�е��ֿ�
+			if(size==12)temp=asc2_1206[chr][t]; 	 	//1206
+			else if(size==16)temp=asc2_1608[chr][t];	//1608
+			else if(size==24)temp=asc2_2412[chr][t];	//2412
+			else return;
 			for(t1=0;t1<8;t1++)
 			{
 				if(temp&0x80)OLED_DrawPoint(x,y,mode);
@@ -214,13 +223,15 @@ void OLED_ShowChar(uint8_t x,uint8_t y,uint8_t chr,uint8_t size,uint8_t mode)
 }
 
 /**
- * @brief		���ܣ��ڹ̶�λ����ʾ�ַ���
- * @param		x:������ y�������� p����Ҫ��ʾ���ַ��� size:�ֺ� 12/16/32
- * @return	��
+ * @brief     显示字符串函数
+ * @param     x - x坐标
+ * @param     y - y坐标
+ * @param     p - 字符串常量
+ * @param     size - 字号 12/16/24
  */
 void OLED_ShowString(uint8_t x,uint8_t y,const uint8_t *p,uint8_t size)
 {	
-    while((*p<='~')&&(*p>=' '))//�ж��ǲ��ǷǷ��ַ�
+    while((*p<='~')&&(*p>=' '))
     {       
         if(x>(128-(size/2))){x=0;y+=size;}
         if(y>(64-size)){y=x=0;OLED_Clear(1);}
@@ -231,15 +242,18 @@ void OLED_ShowString(uint8_t x,uint8_t y,const uint8_t *p,uint8_t size)
 }
 
 /**
- * @brief		���ܣ��ڹ̶�λ����ʾ����
- * @param		x:������ y�������� p����Ҫ��ʾ���ַ��� size:�ֺ� 12/16/32
- * @return	��
+ * @brief     显示数字函数
+ * @param     x - x坐标
+ * @param     y - y坐标
+ * @param     number - 显示的数字
+ * @param     size - 字号 12/16/24
  */
 void OLED_ShowNumber(uint8_t x,uint8_t y,int32_t number,uint8_t size)
 {	
 	char *p;
+	//数字转换成字符串
 	p = Num_To_String(number,p,10);
-	while((*p<='9')&&(*p>='0'))//�ж��ǲ��ǷǷ��ַ�
+	while((*p<='9')&&(*p>='0'))//判断是否合法
 	{       
 			if(x>(128-(size/2))){x=0;y+=size;}
 			if(y>(64-size)){y=x=0;OLED_Clear(1);}
@@ -250,38 +264,31 @@ void OLED_ShowNumber(uint8_t x,uint8_t y,int32_t number,uint8_t size)
 }
 
 /**
- * @brief		���ܣ���ʼ��OLED
- * @param		��
- * @return	��
+ * @brief     OLED初始化函数
  */
 void OLED_Init(void)
 {
-	//����GPIO��ʼ���ṹ��
 	GPIO_InitTypeDef  GPIO_InitStructure;
-	
-	//ʹ�ܶ�Ӧ�����ⲿʱ��
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE);
 	
 	/*GPIOB*/
-	//Ϊ��ʼ���ṹ�帳ȱʡֵ
 	GPIO_StructInit(&GPIO_InitStructure);
 	GPIO_InitStructure.GPIO_Pin=(GPIO_Pin_3|GPIO_Pin_4|GPIO_Pin_5|GPIO_Pin_6|GPIO_Pin_7);
 	GPIO_InitStructure.GPIO_Mode	= GPIO_Mode_Out_PP;//�������
-	//��ȡ��ʼ���ṹ���ֵ
 	GPIO_Init(GPIOB, &GPIO_InitStructure);
 	
-	//IO��ʼ����ɺ�����Ĭ�ϵ�ƽ
+	//IO口初始状态
 	GPIO_SetBits(GPIOB,GPIO_Pin_3|GPIO_Pin_4|GPIO_Pin_5|GPIO_Pin_6);
 	GPIO_ResetBits(GPIOB,GPIO_Pin_7);
 
-	/*��������OLEDоƬͨ�Ŵ��룬��������*/
+	/*OLED准备开启*/
 	OLED_RS=1;
 	Delay_ms(100);
 	OLED_RS=0;
 	Delay_ms(100);
 	OLED_RS=1;
 	
-	//ָ��������ʾģʽ
+	//用通信代码配置OLED显示模式
 	OLED_WR_Byte(0xAE,OLED_CMD);
 	OLED_WR_Byte(0x00,OLED_CMD);
 	OLED_WR_Byte(0x10,OLED_CMD);
@@ -289,7 +296,7 @@ void OLED_Init(void)
 	OLED_WR_Byte(0x81,OLED_CMD);
 	OLED_WR_Byte(0xCF,OLED_CMD);
 	OLED_WR_Byte(0xA1,OLED_CMD);
-	OLED_WR_Byte(0xC0,OLED_CMD);//0xc8 0xc0 ��Ļ�ߵ�������һ��
+	OLED_WR_Byte(0xC0,OLED_CMD);//0xc8 0xc0 屏幕颠倒选另一个
 	OLED_WR_Byte(0xA8,OLED_CMD);
 	OLED_WR_Byte(0x3f,OLED_CMD);
 	OLED_WR_Byte(0xD3,OLED_CMD);

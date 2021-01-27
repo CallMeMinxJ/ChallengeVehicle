@@ -3,13 +3,15 @@
  * @brief     车辆控制相关函数
  * @author    MINXJ (CallMeMinxJ@outlook.com)
  * @version   0.1
- * @date      2021-01-27
+ * @date      2021-01-28
  * 
- * @copyright Copyright (c) CAUC
+ * @copyright Copyright (C) 2007 Free Software Foundation, Inc. <https://fsf.org/>
+ *            Everyone is permitted to copy and distribute verbatim copies
+ *            of this license document, but changing it is not allowed.
  * 
  */
  
- /*ͷ�ļ�����*/
+ /*头文件部分*/
 #include "system.h"
 #include "control.h"
 #include "hw_key.h"

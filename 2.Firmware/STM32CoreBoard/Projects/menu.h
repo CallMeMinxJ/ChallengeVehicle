@@ -1,10 +1,10 @@
 #ifndef _MENU_H_
 #define _MENU_H_
 
-/*Í·ÎÄ¼þ²¿·Ö*/
+/*å¤´æ–‡ä»¶éƒ¨åˆ†*/
 #include "system.h"
 
-/*º¯ÊýÉùÃ÷²¿·Ö*/
+/*å‡½æ•°å£°æ˜Žéƒ¨åˆ†*/
 void Menu_Adc1_Page(void);
 
 

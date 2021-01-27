@@ -1,24 +1,24 @@
 #ifndef _OLED_H_
 #define _OLED_H_
 
-/*Í·ÎÄ¼ş²¿·Ö*/
+/*å¤´æ–‡ä»¶éƒ¨åˆ†*/
 #include "system.h"
 
-/*ºê¶¨Òå²¿·Ö*/
-//OLEDÏà¹Ø²ÎÊı
+/*å®å®šä¹‰éƒ¨åˆ†*/
+//OLEDæŒ‡ä»¤/æ•°æ®æ¨¡å¼
 #define OLED_CMD    0
 #define OLED_DATA   1
-//OLEDÕ¼ÓÃµÄIO¿Ú
+//OLED SPI ç«¯å£å®šä¹‰
 #define OLED_DO  	PBout(3)
 #define OLED_D1  	PBout(4)
-#define OLED_RS	  PBout(5)
+#define OLED_RS	    PBout(5)
 #define OLED_DC		PBout(6)   
 #define OLED_CS  	PBout(7)
 
-/*º¯ÊıÉùÃ÷²¿·Ö*/
+/*å‡½æ•°å£°æ˜éƒ¨åˆ†*/
 void OLED_Init(void);
-void OLED_WR_Byte( uint8_t dat, uint8_t cmd);                  //Ğ´Ö¸Áî
-void OLED_Refresh_Gram(void);//OLED³õÊ¼»¯
+void OLED_WR_Byte( uint8_t dat, uint8_t cmd);
+void OLED_Refresh_Gram(void);
 void OLED_Display_On(void);
 void OLED_Display_Off(void);
 void OLED_Clear(uint8_t mode);

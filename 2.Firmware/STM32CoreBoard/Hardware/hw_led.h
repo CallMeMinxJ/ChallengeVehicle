@@ -1,19 +1,19 @@
 #ifndef _LED_H_
 #define _LED_H_
 
-/*Í·ÎÄ¼ş²¿·Ö*/
+/*å¤´æ–‡ä»¶éƒ¨åˆ†*/
 #include "system.h"
 
-/*ºê¶¨Òå²¿·Ö*/
-//LED×´Ì¬ µÍµçÆ½ÓĞĞ§
+/*å®å®šä¹‰éƒ¨åˆ†*/
+//LEDçŠ¶æ€
 #define Led_Turn_On		0
 #define Led_Turn_Off	1
 #define Led_Flash			2
-//LED¶Ë¿Ú¶¨Òå
+//LEDå¼•è„š
 #define Led_0 PBout(13)
 #define Led_1 PBout(12)
 
-/*º¯ÊıÉùÃ÷²¿·Ö*/
+/*å‡½æ•°å£°æ˜éƒ¨åˆ†*/
 void Led_Init(void);
 void Led_Display(uint8_t Led_0_Mode,uint8_t Led_1_Mode);
 
