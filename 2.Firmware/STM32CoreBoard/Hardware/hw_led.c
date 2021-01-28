@@ -57,6 +57,28 @@ void Led_Display(uint8_t Led_0_Mode,uint8_t Led_1_Mode)
 	else	Led_1_Flash_Door = false;
 }
 
+/**
+ * @brief     LED闪烁控制函数
+ * @param     Half_Cycle - My Param doc
+ */
+void Led_Flashing(const uint16_t Half_Cycle)
+{
+	static uint16_t Led_Flash_Time_ms = 0;
+
+	//Led闪烁
+	if (Led_0_Flash_Door || Led_1_Flash_Door)
+	{
+		//flash 半周期 Half_Cycle ms
+		if(Led_Flash_Time_ms<Half_Cycle)Led_Flash_Time_ms++;
+		else 
+		{
+			Led_Flash_Time_ms=0;
+			if(Led_0_Flash_Door)Led_0 = !Led_0;
+			if(Led_1_Flash_Door)Led_1 = !Led_1;
+		}
+	}
+
+}
  
 
 

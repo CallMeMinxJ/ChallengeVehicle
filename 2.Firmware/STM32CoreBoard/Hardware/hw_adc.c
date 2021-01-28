@@ -94,17 +94,6 @@ uint16_t Adc1_Get_Value(uint8_t Channel)
 	return ADC_GetConversionValue(ADC1);
 }
 
-/**
- * @brief     对ADC进行均值滤波
- * @param     ADC_Channel_Num - My Param doc
- * @param     Times - My Param doc
- * @return    uint16_t 
- */
-uint16_t Adc_Average (uint8_t ADC_Channel_Num,uint16_t Times)
-{
-	return 0;
-}
-
 
 
 

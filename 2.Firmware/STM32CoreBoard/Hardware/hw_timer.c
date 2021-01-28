@@ -12,6 +12,7 @@
  */
 /*头文件部分*/
 #include "system.h"
+#include "control.h"
 #include "hw_timer.h"
 #include "hw_led.h"
 
@@ -45,24 +46,48 @@ void TIM3_Init(uint16_t ARR,uint16_t PSC)
  */
 void TIM3_IRQHandler(void)
 {
-	static uint16_t Led_Flash_Time_ms = 0;
-	
 	if (TIM_GetITStatus(TIM3, TIM_IT_Update) != RESET)
 	{
 		TIM_ClearITPendingBit(TIM3, TIM_IT_Update  );
 		
 		//Led闪烁
-		if (Led_0_Flash_Door || Led_1_Flash_Door)
-		{
-			//flash 半周期 500ms
-			if(Led_Flash_Time_ms<500)Led_Flash_Time_ms++;
-			else 
-			{
-				Led_Flash_Time_ms=0;
-				if(Led_0_Flash_Door)Led_0 = !Led_0;
-				if(Led_1_Flash_Door)Led_1 = !Led_1;
-			}
-		}
+		Led_Flashing(500);
+	}
+}
+
+/**
+ * @brief     TIM2时钟初始化函数
+ * @param     ARR - 装载值
+ * @param     PSC - 分频系数
+ * @detail	  利用该时钟中断进行车辆的数据处理
+ */
+void TIM2_Init(uint16_t ARR,uint16_t PSC)
+{
+	TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;
+	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE);
+	
+	//初始化时中配置
+	TIM_TimeBaseStructure.TIM_Period = ARR; 
+	TIM_TimeBaseStructure.TIM_Prescaler =PSC; 
+	TIM_TimeBaseStructure.TIM_ClockDivision = TIM_CKD_DIV1; 
+	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
+	TIM_TimeBaseInit(TIM2, &TIM_TimeBaseStructure); 
+ 
+	TIM_ITConfig(TIM2,TIM_IT_Update,ENABLE ); 
+	TIM_Cmd(TIM2, ENABLE);
+}
+
+/**
+ * @brief     TIM2中断函数
+ */
+void TIM2_IRQHandler(void)
+{
+	if (TIM_GetITStatus(TIM2, TIM_IT_Update) != RESET)
+	{
+		TIM_ClearITPendingBit(TIM2, TIM_IT_Update  );
+		
+		//车辆中断 数据处理
+		Car_Data_Processing();
 	}
 }
 

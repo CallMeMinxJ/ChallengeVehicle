@@ -30,6 +30,13 @@ void Nvic_Init(void)
 	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 3;  //抢占优先级
 	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE; 
 	NVIC_Init(&NVIC_InitStructure);
+
+	//TIM2
+	NVIC_InitStructure.NVIC_IRQChannel = TIM2_IRQn;  //TIM3中断
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;//主要优先级
+	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 1;  //抢占优先级
+	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE; 
+	NVIC_Init(&NVIC_InitStructure);
 }
 
 /**

@@ -16,6 +16,7 @@
 
 /*全局变量部分*/
 uint16_t Adc1_Buff[16]={0};
+uint16_t Adc1_Real[16]={0};
 
 /**
  * @brief     DMA ADC1->Adc1_Buff 的通道配置

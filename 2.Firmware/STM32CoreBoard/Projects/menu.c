@@ -19,6 +19,8 @@
   
 /*全局变量部分*/
 extern uint16_t Adc1_Buff[16];
+extern uint16_t Adc1_Real[16];
+extern uint8_t 	OLED_GRAM[128][8];
 
 /**
  * @brief     Adc1菜单部分
@@ -31,31 +33,31 @@ void Menu_Adc1_Page(void)
 	
 	//Channel 1-4
 	OLED_ShowString(0,12,"1-4:",12);
-	OLED_ShowNumber(24,12,(int32_t) Adc1_Buff[0],12);
-	OLED_ShowNumber(50,12,(int32_t) Adc1_Buff[1],12);
-	OLED_ShowNumber(76,12,(int32_t) Adc1_Buff[2],12);
-	OLED_ShowNumber(100,12,(int32_t) Adc1_Buff[3],12);
+	OLED_ShowNumber(24,12,(int32_t) Adc1_Real[0],12);
+	OLED_ShowNumber(50,12,(int32_t) Adc1_Real[1],12);
+	OLED_ShowNumber(76,12,(int32_t) Adc1_Real[2],12);
+	OLED_ShowNumber(100,12,(int32_t) Adc1_Real[3],12);
 	
 	//Channel 5-8
 	OLED_ShowString(0,24,"5-8:",12);
-	OLED_ShowNumber(24,24,(int32_t) Adc1_Buff[4],12);
-	OLED_ShowNumber(50,24,(int32_t) Adc1_Buff[5],12);
-	OLED_ShowNumber(76,24,(int32_t) Adc1_Buff[6],12);
-	OLED_ShowNumber(100,24,(int32_t) Adc1_Buff[7],12);
+	OLED_ShowNumber(24,24,(int32_t) Adc1_Real[4],12);
+	OLED_ShowNumber(50,24,(int32_t) Adc1_Real[5],12);
+	OLED_ShowNumber(76,24,(int32_t) Adc1_Real[6],12);
+	OLED_ShowNumber(100,24,(int32_t) Adc1_Real[7],12);
 	
 	//Channel 9-12
 	OLED_ShowString(0,36,"9- :",12);
-	OLED_ShowNumber(24,36,(int32_t) Adc1_Buff[8],12);
-	OLED_ShowNumber(50,36,(int32_t) Adc1_Buff[9],12);
-	OLED_ShowNumber(76,36,(int32_t) Adc1_Buff[10],12);
-	OLED_ShowNumber(100,36,(int32_t) Adc1_Buff[11],12);
+	OLED_ShowNumber(24,36,(int32_t) Adc1_Real[8],12);
+	OLED_ShowNumber(50,36,(int32_t) Adc1_Real[9],12);
+	OLED_ShowNumber(76,36,(int32_t) Adc1_Real[10],12);
+	OLED_ShowNumber(100,36,(int32_t) Adc1_Real[11],12);
 	
 	//Channel 13-16
 	OLED_ShowString(0,48,"-16:",12);
-	OLED_ShowNumber(24,48,(int32_t) Adc1_Buff[12],12);
-	OLED_ShowNumber(50,48,(int32_t) Adc1_Buff[13],12);
-	OLED_ShowNumber(76,48,(int32_t) Adc1_Buff[14],12);
-	OLED_ShowNumber(100,48,(int32_t) Adc1_Buff[15],12);
+	OLED_ShowNumber(24,48,(int32_t) Adc1_Real[12],12);
+	OLED_ShowNumber(50,48,(int32_t) Adc1_Real[13],12);
+	OLED_ShowNumber(76,48,(int32_t) Adc1_Real[14],12);
+	OLED_ShowNumber(100,48,(int32_t) Adc1_Real[15],12);
 	
 	OLED_Refresh_Gram();
 }

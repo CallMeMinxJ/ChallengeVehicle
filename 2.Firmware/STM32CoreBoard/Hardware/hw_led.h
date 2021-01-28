@@ -16,6 +16,7 @@
 /*函数声明部分*/
 void Led_Init(void);
 void Led_Display(uint8_t Led_0_Mode,uint8_t Led_1_Mode);
+void Led_Flashing(const uint16_t Half_Cycle);
 
 #endif
 

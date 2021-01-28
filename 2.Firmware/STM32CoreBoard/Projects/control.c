@@ -21,6 +21,10 @@
 #include "hw_adc.h"
 #include "hw_dma.h"
 
+/*全局变量部分*/
+extern uint16_t Adc1_Buff[16];
+extern uint16_t Adc1_Real[16];
+
 /**
  * @brief     车辆总体初始化函数
  */
@@ -29,10 +33,32 @@ void Car_Init(void)
 	OLED_Init();//OLED模块初始化
 	Key_Init();	//按键模块初始化
 	Led_Init();	//LED模块初始化
-	TIM3_Init(1000-1,72-1);	//时钟模块初始化
-	Dma_Adc1_To_GlobalVar();//DMA模块初始化
+	TIM3_Init(1000-1,72-1);		//时钟模块初始化
+	TIM2_Init(1000-1,720-1);	//时钟模块初始化
+	Dma_Adc1_To_GlobalVar();	//DMA模块初始化
 	Adc1_Init();//ADC1模块初始化
 }
- 
 
+/**
+ * @brief     车辆整体中断 数据处理函数
+ */
+void Car_Data_Processing(void)
+{
+	//对ADC数据进行均值滤波
+	First_Order_Complementary_Filtering(Adc1_Buff , Adc1_Real ,  0.88, 16);
+}
+
+/**
+ * @brief     一阶互补滤波函数
+ * @param     Pending_Data - 待处理数据首地址
+ * @param     Processed_Data - 处理后数据首地址
+ * @param     a - 滤波系数 : 0~1 需要调试
+ * @param     Data_Count - 数据总数
+ */
+void First_Order_Complementary_Filtering (uint16_t * Pending_Data , uint16_t * Processed_Data , double a , uint8_t Data_Count)
+{
+	uint8_t cnt;
+	for(cnt = 0; cnt < Data_Count; cnt++)
+		Processed_Data[cnt] =(uint16_t) (a * Processed_Data[cnt] + (1 - a) * Pending_Data[cnt]);
+}
 
