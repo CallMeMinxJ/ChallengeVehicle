@@ -413,6 +413,21 @@
               <FileType>1</FileType>
               <FilePath>..\Hardware\hw_timer.c</FilePath>
             </File>
+            <File>
+              <FileName>hw_inf&amp;gray.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Hardware\hw_inf&amp;gray.c</FilePath>
+            </File>
+            <File>
+              <FileName>hw_rplidar.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Hardware\hw_rplidar.c</FilePath>
+            </File>
+            <File>
+              <FileName>hw_usart.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Hardware\hw_usart.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

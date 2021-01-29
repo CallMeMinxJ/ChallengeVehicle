@@ -26,17 +26,24 @@ void Nvic_Init(void)
 
 	//TIM3
 	NVIC_InitStructure.NVIC_IRQChannel = TIM3_IRQn;  //TIM3中断
-	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;//主要优先级
-	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 3;  //抢占优先级
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;//抢占优先级
+	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 3;  //响应优先级
 	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE; 
 	NVIC_Init(&NVIC_InitStructure);
 
 	//TIM2
 	NVIC_InitStructure.NVIC_IRQChannel = TIM2_IRQn;  //TIM3中断
-	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;//主要优先级
-	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 1;  //抢占优先级
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;//抢占优先级
+	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 1;  //响应优先级
 	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE; 
 	NVIC_Init(&NVIC_InitStructure);
+
+	//USART3
+    NVIC_InitStructure.NVIC_IRQChannel = USART3_IRQn;
+    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
+    NVIC_InitStructure.NVIC_IRQChannelSubPriority = 2;
+    NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+    NVIC_Init(&NVIC_InitStructure);   
 }
 
 /**

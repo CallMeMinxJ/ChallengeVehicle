@@ -7,5 +7,6 @@
 /*函数初始化部分*/
 void Adc1_Init(void);
 uint16_t Adc1_Get_Value(uint8_t Channel);
+void Dma_Usart3_To_GlobalVar(void);
 
 #endif

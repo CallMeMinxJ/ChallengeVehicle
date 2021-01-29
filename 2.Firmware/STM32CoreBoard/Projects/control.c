@@ -20,10 +20,14 @@
 #include "hw_timer.h"
 #include "hw_adc.h"
 #include "hw_dma.h"
+#include "hw_rplidar.h"
+#include "hw_inf&gray.h"
 
 /*全局变量部分*/
-extern uint16_t Adc1_Buff[16];
-extern uint16_t Adc1_Real[16];
+extern uint16_t Adc1_Buff[ADC1_BUFF_LEN];
+extern uint16_t Adc1_Real[ADC1_BUFF_LEN];
+extern uint8_t	Usart3_Buff[USART3_RX_LEN];
+extern uint16_t G_Rplidar_Collect[361];
 
 /**
  * @brief     车辆总体初始化函数
@@ -35,8 +39,8 @@ void Car_Init(void)
 	Led_Init();	//LED模块初始化
 	TIM3_Init(1000-1,72-1);		//时钟模块初始化
 	TIM2_Init(1000-1,720-1);	//时钟模块初始化
-	Dma_Adc1_To_GlobalVar();	//DMA模块初始化
-	Adc1_Init();//ADC1模块初始化
+	Inf_And_Gray_Init();		//红外灰度模块初始化
+	Rplidar_Init();				//激光雷达模块初始化
 }
 
 /**
@@ -45,7 +49,11 @@ void Car_Init(void)
 void Car_Data_Processing(void)
 {
 	//对ADC数据进行均值滤波
-	First_Order_Complementary_Filtering(Adc1_Buff , Adc1_Real ,  0.88, 16);
+	First_Order_Complementary_Filtering(Adc1_Buff , Adc1_Real ,  0.88, ADC1_BUFF_LEN);
+	//激光雷达数据包数据处理
+	Rplidar_Data_Processing(Usart3_Buff);
+	//激光雷达捕获目标位置
+	Rplidar_Capture_Target(G_Rplidar_Collect, TARGET_DISTANCE_THRESHOLD, TARGET_DISTANCE_MAX);
 }
 
 /**

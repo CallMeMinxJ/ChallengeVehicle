@@ -6,6 +6,8 @@
 
 /*函数声明部分*/
 void Menu_Adc1_Page(void);
+void Menu_Rplidar_Page(void);
+void Menu_Display (uint8_t Menu_Page);
 
 
 #endif

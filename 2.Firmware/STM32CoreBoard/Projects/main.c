@@ -17,6 +17,9 @@
 #include "hw_oled.h"
 #include "menu.h"
 
+/*全局变量部分*/
+extern uint8_t G_Menu_Page;
+
 /**
  * @brief 程序入口 主函数
  * @return int 
@@ -33,7 +36,7 @@ int main (void)
 	{
 		//按键检测及功能实现
 		Key_Function(Key_Scan(Mode_Ucnt));
-		Menu_Adc1_Page();
+		Menu_Display(G_Menu_Page);
 	}
 }
 

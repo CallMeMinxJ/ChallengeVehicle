@@ -16,6 +16,9 @@
  #include "hw_key.h"
  #include "hw_led.h"
  
+ /*全局变量部分*/
+ extern uint8_t G_Menu_Page;
+
 /**
  * @brief     按键GPIO初始化
  */
@@ -78,7 +81,7 @@ void Key_Function(uint8_t Key_Num)
 	{
 		case Key_0_Num:
 		{
-			Led_Display(Led_Turn_On,Led_Turn_Off);
+			G_Menu_Page = !G_Menu_Page;
 			break;
 		}
 		

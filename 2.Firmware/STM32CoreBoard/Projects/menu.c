@@ -16,11 +16,29 @@
  #include "menu.h"
  #include "hw_oled.h"
  #include "hw_adc.h"
+ #include "hw_rplidar.h"
   
 /*全局变量部分*/
+//菜单页码 临时
+uint8_t G_Menu_Page = 0;
+//DMA Buff
 extern uint16_t Adc1_Buff[16];
 extern uint16_t Adc1_Real[16];
 extern uint8_t 	OLED_GRAM[128][8];
+//激光雷达相关
+extern uint16_t G_Rplidar_Angle;
+extern uint16_t G_Rplidar_Distance;
+extern uint16_t G_Rplidar_Collect[361];
+
+void Menu_Display (uint8_t Menu_Page)
+{
+	OLED_Clear(0);
+	switch(Menu_Page)
+	{
+		case 0:Menu_Adc1_Page();break;
+		case 1:Menu_Rplidar_Page();break;
+	}
+}
 
 /**
  * @brief     Adc1菜单部分
@@ -61,6 +79,19 @@ void Menu_Adc1_Page(void)
 	
 	OLED_Refresh_Gram();
 }
- 
+
+/**
+ * @brief     雷达数据界面
+ * @todo      只是为了测试模块，需要改进
+ */
+void Menu_Rplidar_Page(void)
+{
+	//绘制捕获目标信息
+	Rplidar_Display_Capture_To_Oled(G_Rplidar_Distance, G_Rplidar_Angle);
+	//绘制激光雷达扫描结果
+	Rplidar_Display_Map_To_Oled(G_Rplidar_Collect);
+
+	OLED_Refresh_Gram();
+}
 
 
