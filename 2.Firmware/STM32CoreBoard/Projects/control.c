@@ -26,8 +26,6 @@
 /*全局变量部分*/
 extern uint16_t Adc1_Buff[ADC1_BUFF_LEN];
 extern uint16_t Adc1_Real[ADC1_BUFF_LEN];
-extern uint8_t	Usart3_Buff[USART3_RX_LEN];
-extern uint16_t G_Rplidar_Collect[361];
 
 /**
  * @brief     车辆总体初始化函数
@@ -66,4 +64,5 @@ void First_Order_Complementary_Filtering (uint16_t * Pending_Data , uint16_t * P
 	for(cnt = 0; cnt < Data_Count; cnt++)
 		Processed_Data[cnt] =(uint16_t) (a * Processed_Data[cnt] + (1 - a) * Pending_Data[cnt]);
 }
+
 

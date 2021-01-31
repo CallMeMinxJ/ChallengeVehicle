@@ -86,29 +86,35 @@ void Rplidar_Data_Processing (uint8_t * Usart3_Buff)
         distance[count] += ((uint16_t)Usart3_Buff[i + 1]) << 6;
         dsita[count] = (Usart3_Buff[i] & 0x01) << 4;
         dsita[count] += Usart3_Buff[i + 4] & 0x0F;
+
         if ((Usart3_Buff[i] & 0x02) == 0x02) dsita[count] *= -1;
+
         dsita[count] /= 8;
         count ++;
         distance[count] = Usart3_Buff[i + 2] >> 2;
         distance[count] += ((uint16_t)Usart3_Buff[i + 3]) << 6;
         dsita[count] = (Usart3_Buff[i + 2] & 0x01) << 4;
         dsita[count] += Usart3_Buff[i + 4] & 0xF0;
+
         if ((Usart3_Buff[i + 2] & 0x02) == 0x02) dsita[count] *= -1;
+
         dsita[count] /= 8;
         count ++;
     }
 
     real_angle = start_angle_q6 / 64.0;
+
     AngleDiff = ((last_real_angle <= real_angle)?
             (real_angle - last_real_angle):
             (360 + real_angle - last_real_angle));
+
     for(i = 1; i <= 32; i++)
     {
         temp[i] = last_real_angle + AngleDiff / 32.0 * i;
         G_Rplidar_Collect[(int)temp[i]] = distance[i];
     }
-    last_real_angle = real_angle;
 
+    last_real_angle = real_angle;
     G_Rplidar_Distance = G_Rplidar_Collect[G_Rplidar_Angle];
 }
 
@@ -166,10 +172,10 @@ void Rplidar_Capture_Target(uint16_t * collect, uint16_t Target_Distance_Thresho
 				if 
 				(
 					(collect[i] - scan1[0]) > Target_Distance_Threshold
-					&& sabs(scan1[0] - scan1[1]) < Target_Distance_Threshold
-					&& sabs(scan1[1] - scan1[2]) < Target_Distance_Threshold
-					&& sabs(scan1[2] - scan1[3]) < Target_Distance_Threshold
-					&& sabs(scan1[3] - scan1[4]) < Target_Distance_Threshold
+					&& abs(scan1[0] - scan1[1]) < Target_Distance_Threshold
+					&& abs(scan1[1] - scan1[2]) < Target_Distance_Threshold
+					&& abs(scan1[2] - scan1[3]) < Target_Distance_Threshold
+					&& abs(scan1[3] - scan1[4]) < Target_Distance_Threshold
 				)
 				//第一个异常点
 				{

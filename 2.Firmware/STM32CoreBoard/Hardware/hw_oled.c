@@ -12,7 +12,7 @@
  */
  
 /*头文件部分*/
-#include "stdlib.h"
+#include <stdlib.h>
 #include <math.h>
 #include "system.h"
 #include "hw_oled.h"
