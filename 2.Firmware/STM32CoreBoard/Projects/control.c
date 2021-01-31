@@ -50,10 +50,7 @@ void Car_Data_Processing(void)
 {
 	//对ADC数据进行均值滤波
 	First_Order_Complementary_Filtering(Adc1_Buff , Adc1_Real ,  0.88, ADC1_BUFF_LEN);
-	//激光雷达数据包数据处理
-	Rplidar_Data_Processing(Usart3_Buff);
-	//激光雷达捕获目标位置
-	Rplidar_Capture_Target(G_Rplidar_Collect, TARGET_DISTANCE_THRESHOLD, TARGET_DISTANCE_MAX);
+	
 }
 
 /**

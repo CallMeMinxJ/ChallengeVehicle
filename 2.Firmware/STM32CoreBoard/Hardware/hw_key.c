@@ -15,9 +15,11 @@
  #include "system.h"
  #include "hw_key.h"
  #include "hw_led.h"
+ #include "hw_rplidar.h"
  
  /*全局变量部分*/
  extern uint8_t G_Menu_Page;
+ extern uint16_t dmax;
 
 /**
  * @brief     按键GPIO初始化
@@ -87,13 +89,13 @@ void Key_Function(uint8_t Key_Num)
 		
 		case Key_1_Num:
 		{
-			Led_Display(Led_Turn_Off,Led_Turn_On);
+			Rplidar_Start_Scanning();	
 			break;
 		}
 		
 		case Key_2_Num:
 		{
-			Led_Display(Led_Flash,Led_Turn_Off);
+			dmax>200?(dmax-=200):(dmax = 10000);
 			break;
 		}
 	}

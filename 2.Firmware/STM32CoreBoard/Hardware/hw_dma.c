@@ -40,7 +40,7 @@ void Dma_Adc1_To_GlobalVar(void)
 	DMA_Struct.DMA_Mode               = DMA_Mode_Circular;
 	DMA_Struct.DMA_Priority           = DMA_Priority_High;
 	DMA_Init(DMA1_Channel1, &DMA_Struct);
-
+	DMA_ITConfig(DMA1_Channel1,DMA1_IT_TC1,ENABLE);
 	DMA_Cmd(DMA1_Channel1, ENABLE);
 }
 
@@ -56,14 +56,14 @@ void Dma_Usart3_To_GlobalVar(void)
 	DMA_StructInit(&DMA_Struct);
 	DMA_Struct.DMA_PeripheralBaseAddr = (uint32_t)&USART3->DR; 
 	DMA_Struct.DMA_MemoryBaseAddr     = (uint32_t)Usart3_Buff;
-	DMA_Struct.DMA_BufferSize         = USART3_RX_LEN;
+	DMA_Struct.DMA_BufferSize         = 7;
 	DMA_Struct.DMA_MemoryInc          = DMA_MemoryInc_Enable;
 	DMA_Struct.DMA_PeripheralDataSize = DMA_PeripheralDataSize_Byte;
 	DMA_Struct.DMA_MemoryDataSize     = DMA_MemoryDataSize_Byte;
-	DMA_Struct.DMA_Mode               = DMA_Mode_Circular;
+	DMA_Struct.DMA_Mode               = DMA_Mode_Normal;
 	DMA_Struct.DMA_Priority           = DMA_Priority_High;
 	DMA_Init(DMA1_Channel3, &DMA_Struct);
-
+	DMA_ITConfig(DMA1_Channel3,DMA1_IT_TC1,ENABLE);
 	DMA_Cmd(DMA1_Channel3, ENABLE);
 }
 

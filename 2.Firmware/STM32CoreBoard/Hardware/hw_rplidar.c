@@ -13,6 +13,7 @@
 
 /*头文件部分*/
 #include <math.h>
+#include <stdlib.h>
 #include "system.h"
 #include "hw_rplidar.h"
 #include "hw_dma.h"
@@ -22,7 +23,7 @@
 
 /*全局变量部分*/
 //雷达开启扫描命令
-const uint8_t G_Rplidar_Start_Up[] = {0xA5, 0x82, 0x05, 0, 0, 0, 0, 0, 0x22}；
+uint16_t G_Rplidar_Start_Up[9] = {0xA5, 0x82, 0x05, 0, 0, 0, 0, 0, 0x22};
 //雷达处理后
 uint16_t G_Rplidar_Angle = 0;
 uint16_t G_Rplidar_Distance = 0;
@@ -39,9 +40,26 @@ uint16_t dmax = 6000;
  */
 void Rplidar_Init(void)
 {
-    Usart3_Init(9600);
-    Dma_Usart3_To_GlobalVar();
-    Usart_Send_Data_Buff(USART3, G_Rplidar_Start_Up);
+    GPIO_InitTypeDef GPIO_InitStructure;
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOD,ENABLE);
+	
+	/*GPIOD*/
+	GPIO_StructInit(&GPIO_InitStructure);
+	GPIO_InitStructure.GPIO_Pin	=	GPIO_Pin_7;
+	GPIO_InitStructure.GPIO_Mode= GPIO_Mode_Out_PP;//上拉输入
+	GPIO_Init(GPIOD,&GPIO_InitStructure);
+
+	Dma_Usart3_To_GlobalVar();
+	Usart3_Init(115200);
+}
+
+/**
+ * @brief     雷达启动扫描
+ */
+void Rplidar_Start_Scanning(void)
+{
+	GPIO_SetBits(GPIOD, GPIO_Pin_7);
+    Usart_Send_Data_Buff(USART3, G_Rplidar_Start_Up,9);
 }
 
 /**
@@ -111,7 +129,7 @@ void Rplidar_Display_Map_To_Oled(uint16_t *collect)
 		y = 32 - (30.0 * collect[i] * sin(k1 * i - (3.1416 / 2))) / dmax;
 
 		//判断点是否在边界内
-		if(sabs((int)x-94)<30 && sabs((int)y-32)<30)
+		if(abs((int)x-94)<30 && abs((int)y-32)<30)
 		{			
 			OLED_DrawPoint(x,y,1);
 		}
@@ -175,18 +193,18 @@ void Rplidar_Capture_Target(uint16_t * collect, uint16_t Target_Distance_Thresho
 				if 
 				(
 					(collect[i] - scan2[0]) > Target_Distance_Threshold
-					&& sabs(scan2[0] - scan2[1]) < Target_Distance_Threshold
-					&& sabs(scan2[1] - scan2[2]) < Target_Distance_Threshold
-					&& sabs(scan2[2] - scan2[3]) < Target_Distance_Threshold
-					&& sabs(scan2[3] - scan2[4]) < Target_Distance_Threshold
+					&& abs(scan2[0] - scan2[1]) < Target_Distance_Threshold
+					&& abs(scan2[1] - scan2[2]) < Target_Distance_Threshold
+					&& abs(scan2[2] - scan2[3]) < Target_Distance_Threshold
+					&& abs(scan2[3] - scan2[4]) < Target_Distance_Threshold
 				)
 				//第二个异常点
 				{
 					d2 = collect[i];
 					a2 = i;
 					
+					G_Rplidar_Angle = (a1 + a2) / 2;
 					G_Rplidar_Target_Distance = (d1 + d2) / 2;
-					G_Rplidar_Target_Angle = (a1 + a2) / 2;
 					
                     //已经捕获到目标
 					G_Rplidar_Target_Is_Catched = true;
@@ -218,5 +236,5 @@ void Rplidar_Display_Capture_To_Oled(uint16_t Rplidar_Distance, uint16_t Rplidar
     OLED_DrawLine(15, 64, 15, 64-30, 1);
 
 	//画出目标方向
-	OLED_DrawLine(15,64-15,15+15*sin((Rplidar_Angle*3.1416)/180),64-15+15*cos((Rplidar_Angle*3.1416)/180),1);
+	OLED_DrawLine(15,64-15,15+(int)(15*cos((Rplidar_Angle*3.1416)/180)),64-15-(int)(15*sin((Rplidar_Angle*3.1416)/180)),1);
 }

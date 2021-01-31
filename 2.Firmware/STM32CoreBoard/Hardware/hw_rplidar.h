@@ -13,6 +13,7 @@
 
 /*函数声明部分*/
 void Rplidar_Init(void);
+void Rplidar_Start_Scanning(void);
 void Rplidar_Data_Processing (uint8_t * Usart3_Buff);
 void Rplidar_Display_Map_To_Oled(uint16_t *collect);
 void Rplidar_Capture_Target(uint16_t * collect, uint16_t Target_Distance_Threshold, uint16_t Target_Distance_Max);
