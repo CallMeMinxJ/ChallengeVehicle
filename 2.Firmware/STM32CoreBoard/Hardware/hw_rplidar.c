@@ -237,6 +237,7 @@ void Rplidar_Display_Capture_To_Oled(uint16_t Rplidar_Distance, uint16_t Rplidar
     OLED_ShowNumber(12, 12, Rplidar_Angle, 12);
     OLED_ShowString(0, 24, "D:", 12);
     OLED_ShowNumber(12, 24, Rplidar_Distance, 12);
+	
 	//十字盘和方向线
     OLED_DrawLine(0, 64-15, 30,64-15, 1);
     OLED_DrawLine(15, 64, 15, 64-30, 1);

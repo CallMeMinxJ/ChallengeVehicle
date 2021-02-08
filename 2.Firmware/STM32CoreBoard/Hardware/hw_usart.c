@@ -17,6 +17,7 @@
 #include "hw_dma.h"
 #include "hw_rplidar.h"
 
+/*全局变量部分*/
 extern uint8_t	Usart3_Buff[USART3_RX_LEN];
 extern uint16_t G_Rplidar_Collect[361];
 

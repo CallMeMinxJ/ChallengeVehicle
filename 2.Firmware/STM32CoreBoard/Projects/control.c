@@ -35,6 +35,7 @@ void Car_Init(void)
 	OLED_Init();//OLED模块初始化
 	Key_Init();	//按键模块初始化
 	Led_Init();	//LED模块初始化
+	TIM1_PWM_Init(1050-1,72-1);	//时钟模块初始化
 	TIM3_Init(1000-1,72-1);		//时钟模块初始化
 	TIM2_Init(1000-1,720-1);	//时钟模块初始化
 	Inf_And_Gray_Init();		//红外灰度模块初始化
