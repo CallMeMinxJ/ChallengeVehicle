@@ -36,6 +36,7 @@ void Car_Init(void)
 	Key_Init();	//按键模块初始化
 	Led_Init();	//LED模块初始化
 	TIM1_PWM_Init(1050-1,72-1);	//时钟模块初始化
+	TIM8_PWM_Init(1050-1,72-1);	//时钟模块初始化
 	TIM3_Init(1000-1,72-1);		//时钟模块初始化
 	TIM2_Init(1000-1,720-1);	//时钟模块初始化
 	Inf_And_Gray_Init();		//红外灰度模块初始化
@@ -65,5 +66,93 @@ void First_Order_Complementary_Filtering (uint16_t * Pending_Data , uint16_t * P
 	for(cnt = 0; cnt < Data_Count; cnt++)
 		Processed_Data[cnt] =(uint16_t) (a * Processed_Data[cnt] + (1 - a) * Pending_Data[cnt]);
 }
+
+/**
+ * @brief     控制小车轮子左转
+ * @param     CCR - PWM的比较值控制占空比
+ */
+void Car_Turn_Left(uint16_t CCR)
+{
+	TIM_SetCompare1(TIM1,CCR);
+	TIM_SetCompare2(TIM1,0);
+	TIM_SetCompare3(TIM1,CCR);
+	TIM_SetCompare4(TIM1,0);
+
+	TIM_SetCompare1(TIM8,0);
+	TIM_SetCompare2(TIM8,CCR);
+	TIM_SetCompare3(TIM8,0);
+	TIM_SetCompare4(TIM8,CCR);
+}
+
+/**
+ * @brief     控制小车轮子右转
+ * @param     CCR - PWM的比较值控制占空比
+ */
+void Car_Turn_Right(uint16_t CCR)
+{
+	TIM_SetCompare1(TIM1,0);
+	TIM_SetCompare2(TIM1,CCR);
+	TIM_SetCompare3(TIM1,0);
+	TIM_SetCompare4(TIM1,CCR);
+
+	TIM_SetCompare1(TIM8,CCR);
+	TIM_SetCompare2(TIM8,0);
+	TIM_SetCompare3(TIM8,CCR);
+	TIM_SetCompare4(TIM8,0);
+}
+
+/**
+ * @brief     控制小车轮子前进
+ * @param     CCR - PWM的比较值控制占空比
+ */
+void Car_Running(uint16_t CCR)
+{
+	TIM_SetCompare1(TIM1,CCR);
+	TIM_SetCompare2(TIM1,0);
+	TIM_SetCompare3(TIM1,CCR);
+	TIM_SetCompare4(TIM1,0);
+
+	TIM_SetCompare1(TIM8,CCR);
+	TIM_SetCompare2(TIM8,0);
+	TIM_SetCompare3(TIM8,CCR);
+	TIM_SetCompare4(TIM8,0);
+}
+
+/**
+ * @brief     控制小车轮子后退
+ * @param     CCR - PWM的比较值控制占空比
+ */
+void Car_Backing(uint16_t CCR)
+{
+	TIM_SetCompare1(TIM1,0);
+	TIM_SetCompare2(TIM1,CCR);
+	TIM_SetCompare3(TIM1,0);
+	TIM_SetCompare4(TIM1,CCR);
+
+	TIM_SetCompare1(TIM8,0);
+	TIM_SetCompare2(TIM8,CCR);
+	TIM_SetCompare3(TIM8,0);
+	TIM_SetCompare4(TIM8,CCR);
+}
+
+/**
+ * @brief     控制小车轮子制动
+ * @param     CCR - PWM的比较值控制占空比
+ */
+void Car_Stop(uint16_t CCR)
+{
+	TIM_SetCompare1(TIM1,CCR);
+	TIM_SetCompare2(TIM1,CCR);
+	TIM_SetCompare3(TIM1,CCR);
+	TIM_SetCompare4(TIM1,CCR);
+
+	TIM_SetCompare1(TIM8,CCR);
+	TIM_SetCompare2(TIM8,CCR);
+	TIM_SetCompare3(TIM8,CCR);
+	TIM_SetCompare4(TIM8,CCR);
+}
+
+
+
 
 

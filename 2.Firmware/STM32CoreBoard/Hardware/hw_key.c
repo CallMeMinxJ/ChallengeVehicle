@@ -13,9 +13,11 @@
  
  /*头文件部分*/
  #include "system.h"
+ #include "control.h"
  #include "hw_key.h"
  #include "hw_led.h"
  #include "hw_rplidar.h"
+
  
  /*全局变量部分*/
  extern uint8_t G_Menu_Page;
@@ -84,18 +86,26 @@ void Key_Function(uint8_t Key_Num)
 		case Key_0_Num:
 		{
 			G_Menu_Page = !G_Menu_Page;
+			if(G_Menu_Page == 0)
+				Car_Stop(0);
 			break;
 		}
 		
 		case Key_1_Num:
 		{
-			Rplidar_Start_Scanning();	
+			if(G_Menu_Page == 1)
+				Rplidar_Start_Scanning();
+			if(G_Menu_Page == 0)
+				Car_Turn_Left(100);
 			break;
 		}
 		
 		case Key_2_Num:
 		{
-			dmax>200?(dmax-=200):(dmax = 10000);
+			if(G_Menu_Page == 1)
+				dmax>200?(dmax-=200):(dmax = 10000);
+			if(G_Menu_Page == 0)
+				Car_Turn_Right(100);
 			break;
 		}
 	}
