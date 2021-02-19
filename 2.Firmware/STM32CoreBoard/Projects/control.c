@@ -86,7 +86,7 @@ void Car_Crush_Target(bool Rplidar_Target_Is_Catched, uint16_t Rplidar_Target_An
 	{
 		if(Rplidar_Target_Angle>90 && Rplidar_Target_Angle<225)
 			Car_Turn_Right(100);
-		if(Rplidar_Target_Angle<90 || Rplidar_Target_Angle>(360-45))
+		else if(Rplidar_Target_Angle<90 && Rplidar_Target_Angle>315)
 			Car_Turn_Left(100);
 	}
 }

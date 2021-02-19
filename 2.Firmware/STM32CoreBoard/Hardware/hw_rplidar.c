@@ -49,8 +49,8 @@ void Rplidar_Init(void)
 	GPIO_InitStructure.GPIO_Mode= GPIO_Mode_Out_PP;//上拉输入
 	GPIO_Init(GPIOD,&GPIO_InitStructure);
 
-	Dma_Usart3_To_GlobalVar();
-	Usart3_Init(115200);
+	Dma_Usart2_To_GlobalVar();
+	Usart2_Init(115200);
 }
 
 /**
@@ -59,14 +59,14 @@ void Rplidar_Init(void)
 void Rplidar_Start_Scanning(void)
 {
 	GPIO_SetBits(GPIOD, GPIO_Pin_7);
-    Usart_Send_Data_Buff(USART3, G_Rplidar_Start_Up,9);
+    Usart_Send_Data_Buff(USART2, G_Rplidar_Start_Up,9);
 }
 
 /**
  * @brief     接收雷达发送的一帧数据的分析函数
  * @param     Usart3_Buff - 得到的一帧数据包
  */
-void Rplidar_Data_Processing (uint8_t * Usart3_Buff)
+void Rplidar_Data_Processing (uint8_t * Usart2_Buff)
 {
     uint8_t     i = 0, ChkSum = 0, count = 0;
     float       AngleDiff = 0, dsita[32] = {0};
@@ -74,29 +74,29 @@ void Rplidar_Data_Processing (uint8_t * Usart3_Buff)
     float       real_angle = 0, start_angle_q6 = 0, temp[32] = {0};
     static float last_real_angle = 0;
 
-    ChkSum = Usart3_Buff[0] & 0x0F;
-    ChkSum += (Usart3_Buff[1] & 0x0F) << 4;
+    ChkSum = Usart2_Buff[0] & 0x0F;
+    ChkSum += (Usart2_Buff[1] & 0x0F) << 4;
 
-    start_angle_q6 = Usart3_Buff[2];
-    start_angle_q6 += ((uint16_t)Usart3_Buff[3] & 0x7F) << 8;
+    start_angle_q6 = Usart2_Buff[2];
+    start_angle_q6 += ((uint16_t)Usart2_Buff[3] & 0x7F) << 8;
 
     for(i = 4;i < 84;i += 5)
     {
-        distance[count] = Usart3_Buff[i] >> 2;
-        distance[count] += ((uint16_t)Usart3_Buff[i + 1]) << 6;
-        dsita[count] = (Usart3_Buff[i] & 0x01) << 4;
-        dsita[count] += Usart3_Buff[i + 4] & 0x0F;
+        distance[count] = Usart2_Buff[i] >> 2;
+        distance[count] += ((uint16_t)Usart2_Buff[i + 1]) << 6;
+        dsita[count] = (Usart2_Buff[i] & 0x01) << 4;
+        dsita[count] += Usart2_Buff[i + 4] & 0x0F;
 
-        if ((Usart3_Buff[i] & 0x02) == 0x02) dsita[count] *= -1;
+        if ((Usart2_Buff[i] & 0x02) == 0x02) dsita[count] *= -1;
 
         dsita[count] /= 8;
         count ++;
-        distance[count] = Usart3_Buff[i + 2] >> 2;
-        distance[count] += ((uint16_t)Usart3_Buff[i + 3]) << 6;
-        dsita[count] = (Usart3_Buff[i + 2] & 0x01) << 4;
-        dsita[count] += Usart3_Buff[i + 4] & 0xF0;
+        distance[count] = Usart2_Buff[i + 2] >> 2;
+        distance[count] += ((uint16_t)Usart2_Buff[i + 3]) << 6;
+        dsita[count] = (Usart2_Buff[i + 2] & 0x01) << 4;
+        dsita[count] += Usart2_Buff[i + 4] & 0xF0;
 
-        if ((Usart3_Buff[i + 2] & 0x02) == 0x02) dsita[count] *= -1;
+        if ((Usart2_Buff[i + 2] & 0x02) == 0x02) dsita[count] *= -1;
 
         dsita[count] /= 8;
         count ++;
@@ -153,6 +153,9 @@ void Rplidar_Capture_Target(uint16_t * collect, uint16_t Target_Distance_Thresho
     int n=0,door=0,i,scan1[5]={0},scan2[5]={0};
 	int a1=0,a2=0;//角度1 和 角度2
 	int d1=0,d2=0;//距离1 和 距离2
+
+	//未捕获目标
+	G_Rplidar_Target_Is_Catched = false;
 	
 	//计算整体数据的均值
 	for (i=0;i<361;i++)
@@ -218,6 +221,7 @@ void Rplidar_Capture_Target(uint16_t * collect, uint16_t Target_Distance_Thresho
 				}
 			}
 		}
+
 	}
 }
 
@@ -243,5 +247,6 @@ void Rplidar_Display_Capture_To_Oled(uint16_t Rplidar_Distance, uint16_t Rplidar
     OLED_DrawLine(15, 64, 15, 64-30, 1);
 
 	//画出目标方向
-	OLED_DrawLine(15,64-15,15+(int)(15*cos((Rplidar_Angle*3.1416)/180)),64-15-(int)(15*sin((Rplidar_Angle*3.1416)/180)),1);
+	if(G_Rplidar_Target_Is_Catched)
+		OLED_DrawLine(15,64-15,15+(int)(15*cos((Rplidar_Angle*3.1416)/180)),64-15-(int)(15*sin((Rplidar_Angle*3.1416)/180)),1);
 }

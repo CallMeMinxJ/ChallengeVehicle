@@ -85,9 +85,9 @@ void Key_Function(uint8_t Key_Num)
 	{
 		case Key_0_Num:
 		{
-			G_Menu_Page = !G_Menu_Page;
 			if(G_Menu_Page == 0)
 				Car_Stop(0);
+			G_Menu_Page = !G_Menu_Page;
 			break;
 		}
 		
